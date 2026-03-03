@@ -29,11 +29,17 @@ export default function Timer() {
     if (!running) return;
 
     const id = setInterval(() => {
-      if (time >= 1) setTime((prev) => prev - 1);
+      setTime((prev) => {
+        if (prev <= 1) {
+          clearInterval(id);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(id);
-  }, [running, time]);
+  }, [running]);
 
   return (
     <SafeAreaView>
@@ -46,6 +52,7 @@ export default function Timer() {
             <TouchableOpacity className="p-3 bg-purple-600 rounded-full">
               <Text className="text-white font-bold text-xl">Dansa</Text>
             </TouchableOpacity>
+
             <TouchableOpacity className="p-3 bg-purple-600 rounded-full">
               <Text className="text-white font-bold text-xl">Pausa</Text>
             </TouchableOpacity>
@@ -65,7 +72,7 @@ export default function Timer() {
               value={number}
               onChangeText={(val) => {
                 const num = Number(val);
-                if (num > 0) onChangeNumber(val);
+                if (num >= 0) onChangeNumber(val);
               }}
               inputMode="numeric"
               maxLength={3}
@@ -75,7 +82,7 @@ export default function Timer() {
                 title="+"
                 onPress={() =>
                   onChangeNumber((prev) =>
-                    prev <= 995 ? (Number(prev) + 5).toString() : 999,
+                    prev <= 995 ? (Number(prev) + 5).toString() : "999",
                   )
                 }
               />
@@ -83,7 +90,7 @@ export default function Timer() {
                 title="-"
                 onPress={() =>
                   onChangeNumber((prev) =>
-                    prev >= 5 ? (Number(prev) - 5).toString() : 0,
+                    prev >= 5 ? (Number(prev) - 5).toString() : "0",
                   )
                 }
               />
