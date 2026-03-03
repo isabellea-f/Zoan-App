@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../global.css";
 
@@ -7,13 +14,16 @@ export default function Timer() {
   const [number, onChangeNumber] = React.useState("45");
   const [time, setTime] = React.useState(0);
   const [running, setRunning] = React.useState(false);
+  const [hasStarted, setHasStarted] = React.useState(false);
 
   // useCallback(handleStart, [])
 
   function handleStart() {
     setRunning(true);
+    setHasStarted(true);
     setTime(Number(number) * 60);
   }
+
   function formatTime(sec) {
     const hrs = Math.floor(sec / 3600);
     const min = Math.floor((sec % 3600) / 60);
@@ -32,6 +42,8 @@ export default function Timer() {
       setTime((prev) => {
         if (prev <= 1) {
           clearInterval(id);
+          setRunning(false);
+          Vibration.vibrate(1000);
           return 0;
         }
         return prev - 1;
@@ -43,21 +55,27 @@ export default function Timer() {
 
   return (
     <SafeAreaView>
-      {running ? (
+      {hasStarted ? (
         <View>
           <Text className="font-bold text-purple-600 text-center text-6xl py-10">
             {formatTime(time)}
           </Text>
           <View className="flex-row gap-4 justify-center">
-            <TouchableOpacity className="p-3 bg-purple-600 rounded-full">
+            <TouchableOpacity
+              onPress={() => setRunning(true)}
+              className="p-3 bg-purple-600 rounded-full"
+            >
               <Text className="text-white font-bold text-xl">Dansa</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="p-3 bg-purple-600 rounded-full">
+            <TouchableOpacity
+              onPress={() => setRunning(false)}
+              className="p-3 bg-purple-600 rounded-full"
+            >
               <Text className="text-white font-bold text-xl">Pausa</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => setRunning(false)}
+              onPress={() => setHasStarted(false)}
               className="p-3 bg-purple-600 rounded-full"
             >
               <Text className="text-white font-bold text-xl">Gå tillbaka</Text>
@@ -68,7 +86,7 @@ export default function Timer() {
         <View>
           <View className="flex-row items-center justify-center gap-2">
             <TextInput
-              className="text-4xl w-20 p-2 bg-black bg-opacity-25 rounded-xl text-center"
+              className="text-4xl w-20 p-2 bg-slate-500 bg-opacity-25 rounded-xl text-center"
               value={number}
               onChangeText={(val) => {
                 const num = Number(val);
