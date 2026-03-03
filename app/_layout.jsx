@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import "../global.css";
 
 export default function TabLayout() {
   return (
@@ -15,16 +16,16 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <Ionicons name="timer-outline" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="timer"
+        name="todo"
         options={{
-          title: "Timer",
+          title: "Todo",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="timer-outline" size={size} color={color} />
+            <Ionicons name="list" size={24} color="black" />
           ),
         }}
       />
