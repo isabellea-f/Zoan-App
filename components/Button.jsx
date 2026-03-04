@@ -7,13 +7,16 @@ const colorMap = {
   primaryDark: "bg-[rgb(49,37,109)]",
 };
 
-export default function Button({ title, onPress, color = "purple" }) {
-  console.log("color:", color, "resolved:", colorMap[color]);
-
+export default function Button({
+  title,
+  onPress,
+  color = "purple",
+  disabled = false,
+}) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`${colorMap[color]} p-3 rounded-lg`}
+      className={`${colorMap[color]} p-3 rounded-lg ${disabled ? "opacity-50" : ""}`}
     >
       <Text className="text-white text-center">{title}</Text>
     </TouchableOpacity>
