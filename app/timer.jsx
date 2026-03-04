@@ -112,6 +112,10 @@ export default function Timer() {
                   )
                 }
               />
+              <Button
+                title="dev"
+                onPress={() => onChangeNumber((0.1).toString())}
+              />
             </View>
           </View>
           <View className="flex-row justify-center">
