@@ -2,12 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
 import { FlatList, Text, TextInput, View } from "react-native";
 import Button from "../components/Button";
+import { DropdownPicker } from "../components/Picker";
 
 export default function Todo() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
-  const [selectedPriority, setSelectedPriority] = useState(null);
+  const [selectedPriority, setSelectedPriority] = useState("Low");
   const inputRef = useRef(null);
+  const options = ["Low", "Medium", "High"];
 
   const addTask = () => {
     setTasks((prev) => [
@@ -26,7 +28,6 @@ export default function Todo() {
       ),
     );
   };
-  A;
 
   const deleteTask = (index) => {
     setTasks((prev) => prev.filter((_, i) => i !== index));
@@ -50,7 +51,12 @@ export default function Todo() {
             title="Add task"
             onPress={addTask}
             color="primaryLight"
-            disabled={!input.trim() || selectedPriority !== null}
+            disabled={!input.trim()}
+          />
+          <DropdownPicker
+            value={selectedPriority}
+            onValueChange={setSelectedPriority}
+            options={options}
           />
         </View>
       </View>
