@@ -1,22 +1,27 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
-import {
-  FlatList,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Text, TextInput, View } from "react-native";
+import Button from "../components/Button";
 
-export default function Timer() {
+export default function Todo() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
   const addTask = () => {
-    setTasks((prev) => [...prev, input]);
+    setTasks((prev) => [...prev, { text: input, finished: false }]);
     setInput("");
     inputRef.current.clear();
   };
+
+  const finishTask = (index) => {
+    setTasks((prev) =>
+      prev.map((task, i) =>
+        i === index ? { ...task, finished: !task.finished } : task,
+      ),
+    );
+  };
+  A;
 
   const deleteTask = (index) => {
     setTasks((prev) => prev.filter((_, i) => i !== index));
@@ -28,22 +33,20 @@ export default function Timer() {
         Todo
       </Text>
       <View>
-        <Text className="text-center">Enter things to dofds!</Text>
-        <View className="items-center">
+        <Text className="text-center items-center">Enter things to dofds!</Text>
+        <View className="flex-row items-center justify-center gap-2 w-4/5 self-center">
           <TextInput
             ref={inputRef}
-            className="bg-white p-4 rounded-lg my-5 w-4/5"
+            className="bg-white p-4 rounded-lg my-5 flex-1"
             placeholder="Add a task..."
             onChangeText={(text) => setInput(text)}
           />
-          <TouchableOpacity
+          <Button
+            title="Add task"
             onPress={addTask}
-            style={{ backgroundColor: "#a855f7", padding: 10, borderRadius: 8 }}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>
-              Add task
-            </Text>
-          </TouchableOpacity>
+            color="primaryLight"
+            disabled={!input.trim()}
+          />
         </View>
       </View>
       <FlatList
@@ -56,19 +59,26 @@ export default function Timer() {
               padding: 8,
             }}
           >
-            <Text>{item}</Text>
-            <TouchableOpacity onPress={() => deleteTask(index)}>
-              <Text
-                style={{
-                  backgroundColor: "#a855f7",
-                  padding: 12,
-                  borderRadius: 8,
-                  color: "white",
-                }}
-              >
-                Delete
-              </Text>
-            </TouchableOpacity>
+            <Text
+              style={
+                item.finished ? { textDecorationLine: "line-through" } : null
+              }
+            >
+              {item.text}
+            </Text>
+            <Button
+              title="Finish task"
+              onPress={() => finishTask(index)}
+              color="primaryLight"
+            />
+            <Button
+              title=""
+              onPress={() => {
+                deleteTask(index);
+              }}
+              icon={<Ionicons name="trash-outline" size={25} color="black" />}
+              color="none"
+            />
           </View>
         )}
       />
