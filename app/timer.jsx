@@ -60,20 +60,24 @@ export default function Timer() {
           <Text className="font-bold text-purple-600 text-center text-6xl py-10">
             {formatTime(time)}
           </Text>
-          <View className="flex-row gap-4 justify-center">
-            <TouchableOpacity
-              onPress={() => setRunning(true)}
-              className="p-3 bg-purple-600 rounded-full"
-            >
-              <Text className="text-white font-bold text-xl">Dansa</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => setRunning(false)}
-              className="p-3 bg-purple-600 rounded-full"
-            >
-              <Text className="text-white font-bold text-xl">Pausa</Text>
-            </TouchableOpacity>
+          <View className="flex-row gap-4 justify-center">
+            {running ? (
+              <TouchableOpacity
+                onPress={() => setRunning(false)}
+                className="p-3 bg-purple-600 rounded-full"
+              >
+                <Text className="text-white font-bold text-xl">Pausa</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => setRunning(true)}
+                className="p-3 bg-purple-600 rounded-full"
+              >
+                <Text className="text-white font-bold text-xl">Dansa</Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity
               onPress={() => setHasStarted(false)}
               className="p-3 bg-purple-600 rounded-full"
