@@ -6,11 +6,16 @@ import Button from "../components/Button";
 export default function Todo() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState(null);
   const inputRef = useRef(null);
 
   const addTask = () => {
-    setTasks((prev) => [...prev, { text: input, finished: false }]);
+    setTasks((prev) => [
+      ...prev,
+      { text: input, finished: false, priority: selectedPriority },
+    ]);
     setInput("");
+    setSelectedPriority(null);
     inputRef.current.clear();
   };
 
@@ -45,7 +50,7 @@ export default function Todo() {
             title="Add task"
             onPress={addTask}
             color="primaryLight"
-            disabled={!input.trim()}
+            disabled={!input.trim() || selectedPriority !== null}
           />
         </View>
       </View>
