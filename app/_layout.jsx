@@ -38,6 +38,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="timer"
+        options={{
+          title: "Timer",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="timer-outline" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
