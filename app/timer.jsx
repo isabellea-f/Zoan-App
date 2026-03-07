@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  Button,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Vibration,
-  View,
-} from "react-native";
+import { Text, TextInput, Vibration, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import HomemadeButton from "../components/Button";
 import "../global.css";
 
 export default function Timer() {
@@ -32,7 +26,7 @@ export default function Timer() {
     if (hrs > 0)
       return `${hrs}:${min.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     if (min > 0) return `${min}:${seconds.toString().padStart(2, "0")}`;
-    return `${seconds}s`;
+    return `${seconds}s `;
   }
 
   React.useEffect(() => {
@@ -57,40 +51,37 @@ export default function Timer() {
     <SafeAreaView>
       {hasStarted ? (
         <View>
-          <Text className="font-bold text-purple-600 text-center text-6xl py-10">
+          <Text className="font-bold mb-5 font-mono bg-[rgb(182,152,206)] text-center text-8xl py-10">
             {formatTime(time)}
           </Text>
 
           <View className="flex-row gap-4 justify-center">
             {running ? (
-              <TouchableOpacity
+              <HomemadeButton
+                title="Pausa"
+                color="primaryLight"
                 onPress={() => setRunning(false)}
-                className="p-3 bg-purple-600 rounded-full"
-              >
-                <Text className="text-white font-bold text-xl">Pausa</Text>
-              </TouchableOpacity>
+              />
             ) : (
-              <TouchableOpacity
+              <HomemadeButton
+                title="Dansa"
+                color="primaryLight"
                 onPress={() => setRunning(true)}
-                className="p-3 bg-purple-600 rounded-full"
-              >
-                <Text className="text-white font-bold text-xl">Dansa</Text>
-              </TouchableOpacity>
+              />
             )}
 
-            <TouchableOpacity
+            <HomemadeButton
+              title="Gå tillbaka"
+              color="primaryLight"
               onPress={() => setHasStarted(false)}
-              className="p-3 bg-purple-600 rounded-full"
-            >
-              <Text className="text-white font-bold text-xl">Gå tillbaka</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       ) : (
         <View>
           <View className="flex-row items-center justify-center gap-2">
             <TextInput
-              className="text-4xl w-20 p-2 bg-slate-500 bg-opacity-25 rounded-xl text-center"
+              className="text-4xl w-20 p-2 bg-[rgb(182,152,206)] bg-opacity-25 rounded-xl text-center"
               value={number}
               onChangeText={(val) => {
                 const num = Number(val);
@@ -100,30 +91,37 @@ export default function Timer() {
               maxLength={3}
             />
             <View>
-              <Button
+              <HomemadeButton
                 title="+"
+                color="primaryLight"
                 onPress={() =>
                   onChangeNumber((prev) =>
                     prev <= 995 ? (Number(prev) + 5).toString() : "999",
                   )
                 }
               />
-              <Button
+              <HomemadeButton
                 title="-"
+                color="primaryLight"
                 onPress={() =>
                   onChangeNumber((prev) =>
                     prev >= 5 ? (Number(prev) - 5).toString() : "0",
                   )
                 }
               />
-              <Button
+              <HomemadeButton
                 title="dev"
+                color="primaryLight"
                 onPress={() => onChangeNumber((0.1).toString())}
               />
             </View>
           </View>
           <View className="flex-row justify-center">
-            <Button title="Start" onPress={handleStart} />
+            <HomemadeButton
+              title="Start"
+              color="primary"
+              onPress={handleStart}
+            />
           </View>
         </View>
       )}
