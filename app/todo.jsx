@@ -1,16 +1,31 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
-import { FlatList, Text, TextInput, View } from "react-native";
+import {
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Button from "../components/Button";
 
 export default function Todo() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("Low");
   const inputRef = useRef(null);
 
+  // Priority
+  const options = ["Low", "Medium", "High"];
+  const priorityColor = { High: "red", Medium: "yellow", Low: "green" };
+
   const addTask = () => {
-    setTasks((prev) => [...prev, { text: input, finished: false }]);
+    setTasks((prev) => [
+      ...prev,
+      { text: input, finished: false, priority: selectedPriority },
+    ]);
     setInput("");
+    setSelectedPriority("Low");
     inputRef.current.clear();
   };
 
@@ -21,67 +36,118 @@ export default function Todo() {
       ),
     );
   };
-  A;
 
   const deleteTask = (index) => {
     setTasks((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
-    <View className="flex-1">
-      <Text className="text-5xl text-center mt-5 pb-2 text-purple-500 font-bold">
+    <View className="flex-1 bg-white">
+      <Text className="text-3xl text-center mt-10 pb-10 text-purple-500 font-bold">
         Todo
       </Text>
       <View>
-        <Text className="text-center items-center">Enter things to dofds!</Text>
-        <View className="flex-row items-center justify-center gap-2 w-4/5 self-center">
+        <View className="w-4/5 self-center">
           <TextInput
             ref={inputRef}
-            className="bg-white p-4 rounded-lg my-5 flex-1"
+            className="bg-gray-200 p-4 rounded-lg mb-4"
             placeholder="Add a task..."
+            placeholderTextColor="#4B5563"
             onChangeText={(text) => setInput(text)}
           />
-          <Button
-            title="Add task"
-            onPress={addTask}
-            color="primaryLight"
-            disabled={!input.trim()}
-          />
-        </View>
-      </View>
-      <FlatList
-        data={tasks}
-        renderItem={({ item, index }) => (
+
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
-              padding: 8,
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 8,
             }}
           >
-            <Text
-              style={
-                item.finished ? { textDecorationLine: "line-through" } : null
-              }
-            >
-              {item.text}
-            </Text>
+            {options.map((option) => (
+              <TouchableOpacity
+                key={option}
+                onPress={() => setSelectedPriority(option)}
+                className="py-1.5 px-3 rounded-full mt-2 justify-center"
+                style={{
+                  backgroundColor:
+                    selectedPriority === option ? "rgb(103,99,122)" : undefined,
+                }}
+              >
+                <Text
+                  className={
+                    selectedPriority === option ? "text-white" : "text-black"
+                  }
+                >
+                  {option}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <View className="w-2/5 self-center mt-10">
             <Button
-              title="Finish task"
-              onPress={() => finishTask(index)}
+              title="Add task"
+              onPress={addTask}
               color="primaryLight"
-            />
-            <Button
-              title=""
-              onPress={() => {
-                deleteTask(index);
-              }}
-              icon={<Ionicons name="trash-outline" size={25} color="black" />}
-              color="none"
+              disabled={!input.trim()}
             />
           </View>
-        )}
-      />
+        </View>
+      </View>
+
+      <View className="p-8 rounded-lg">
+        <FlatList
+          data={tasks}
+          renderItem={({ item, index }) => (
+            <View
+              className="flex-row items-center justify-between py-2 px-3.5 my-2 mx-5 bg-gray-200 color-black rounded-xl shadow-sm"
+              style={{
+                borderLeftWidth: 6,
+                borderLeftColor: priorityColor[item.priority],
+              }}
+            >
+              <View className="flex-row items-center gap-2 flex-1">
+                <TouchableOpacity
+                  onPress={() => finishTask(index)}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  <Ionicons
+                    name={
+                      item.finished
+                        ? "checkmark-circle"
+                        : "checkmark-circle-outline"
+                    }
+                    size={24}
+                    color={item.finished ? "green" : "black"}
+                  />
+                </TouchableOpacity>
+
+                <Text
+                  className="flex-shrink"
+                  style={
+                    item.finished
+                      ? {
+                          textDecorationLine: "line-through",
+                        }
+                      : null
+                  }
+                >
+                  {item.text}
+                </Text>
+              </View>
+
+              <Button
+                onPress={() => deleteTask(index)}
+                icon={<Ionicons name="trash-outline" size={25} color="black" />}
+                color="none"
+              />
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 }
