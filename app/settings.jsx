@@ -52,7 +52,7 @@ export default function Settings() {
       // Uppdaterar UI direkt och sparar lokalt så det finns kvar vid nästa app-start.
       setImageUrl(uri);
       await AsyncStorage.setItem(IMAGE_KEY, uri);
-      setSavedMessage("Bild sparad!");
+      setSavedMessage("Bild sparad, tjoho!");
       setTimeout(() => setSavedMessage(""), 2000);
     }
   };
@@ -61,13 +61,13 @@ export default function Settings() {
     const trimmed = usernameInput.trim();
 
     if (!trimmed) {
-      Alert.alert("Användarnamn saknas", " Skriv in användarnamn, snälla.");
+      Alert.alert("Användarnamn saknas", " Skriv in ett användarnamn, snälla.");
       return;
     }
     // Sparar först till storage, uppdaterar sedan den "officiella" rubriken i UI.
     await AsyncStorage.setItem(USERNAME_KEY, trimmed);
     setSavedUsername(trimmed);
-    setSavedMessage("Användarnamn sparat!");
+    setSavedMessage("Användarnamn uppdaterat, tjiho!");
     // Input rensas efter save, rubriken behåller senaste sparade namn.
     setUsernameInput("");
     setTimeout(() => setSavedMessage(""), 2000);
