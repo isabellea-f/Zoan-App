@@ -8,9 +8,6 @@ export default function Settings() {
   const IMAGE_KEY = "settings.imageUrl";
 
   const [username, setUsername] = useState("");
-  // Hämtas senare från Supabase-profil (fallback om lokal bild saknas)
-  const [avatarUrl, setAvatarUrl] = useState("");
-  // Hämtas senare från Supabase-auth (används vid profiluppdatering)
   const [userId, setUserId] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -68,10 +65,7 @@ export default function Settings() {
     <View className="flex-1 items-center justify-center">
       <Text>Settings</Text>
       {/* Visar vald lokal bild först, annars sparad profilbild */}
-      <Image
-        source={{ uri: imageUrl || avatarUrl }}
-        style={{ width: 120, height: 120 }}
-      />
+      <Image source={{ uri: imageUrl }} style={{ width: 120, height: 120 }} />
       <Pressable onPress={handleSelectImage}>
         <Text>Upload Image</Text>
       </Pressable>
